@@ -61,5 +61,12 @@ EOS
 disasm_to_c_code('transit-aarch64.disasm')
 puts <<EOS
 
+#elif defined(CPU_RISCV64)
+
+// RISCV64
+EOS
+disasm_to_c_code('transit-riscv64.disasm')
+puts <<EOS
+
 #endif
 EOS

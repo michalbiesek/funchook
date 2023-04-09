@@ -74,6 +74,11 @@
 #define CPU_64BIT
 #endif
 
+#if defined __riscv
+#define CPU_RISCV64
+#define CPU_64BIT
+#endif
+
 #if defined _M_AMD64 || defined __x86_64__
 #define CPU_X86_64
 #define CPU_64BIT
