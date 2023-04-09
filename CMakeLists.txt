@@ -16,9 +16,12 @@ if(NOT FUNCHOOK_CPU)
   if (FUNCHOOK_CPU MATCHES "ARM64")
       set(FUNCHOOK_CPU arm64)
   endif ()
+  if (FUNCHOOK_CPU MATCHES "riscv64")
+      set(FUNCHOOK_CPU riscv)
+  endif ()
 endif ()
 
-if (FUNCHOOK_CPU MATCHES "arm64")
+if (FUNCHOOK_CPU MATCHES "arm64" OR FUNCHOOK_CPU MATCHES "riscv")
   set(FUNCHOOK_DEFAULT_DISASM "capstone")
 else ()
   set(FUNCHOOK_DEFAULT_DISASM "distorm")
@@ -97,7 +100,6 @@ if (DISASM_CAPSTONE)
                       -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
                       -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}
                       -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-                      -DCAPSTONE_BUILD_SHARED=OFF
                       -DCAPSTONE_BUILD_STATIC_RUNTIME=OFF
                       -DCAPSTONE_BUILD_TESTS=OFF
                       -DCAPSTONE_BUILD_CSTOOL=OFF

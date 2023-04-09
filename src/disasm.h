@@ -101,6 +101,9 @@ void funchook_disasm_log_instruction(funchook_disasm_t *disasm, const funchook_i
 #if defined(CPU_ARM64)
 funchook_insn_info_t funchook_disasm_arm64_insn_info(funchook_disasm_t *disasm, const funchook_insn_t *insn);
 #endif
+#if defined(CPU_RISCV)
+funchook_insn_info_t funchook_disasm_riscv_insn_info(funchook_disasm_t *disasm, const funchook_insn_t *insn);
+#endif
 
 #if defined(CPU_X86) || defined(CPU_X86_64)
 /* RIP-relative address information */
