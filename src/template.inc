@@ -49,4 +49,24 @@
 #define TRANSIT_HOOK_CALLER_ADDR 0x4
 #define TRANSIT_CODE_SIZE 0x6
 
+#elif defined(CPU_RISCV)
+
+// RISCV 64
+#define TRANSIT_CODE_TEMPLATE { \
+  /* 0000000000000000 <transit>: */ \
+  /*    0: */ 0x00000297,                         /* auipc t0,0x0 */ \
+  /*    4: */ 0x0002b283,                         /* ld t0,0(t0) # 0 <transit> */ \
+  /*    8: */ 0x00000317,                         /* auipc t1,0x0 */ \
+  /*    c: */ 0x00033303,                         /* ld t1,0(t1) # 8 <transit+0x8> */ \
+  /*   10: */ 0x8302,                             /* jr t1 */ \
+  /*   12: */ 0x0001,                             /* nop */ \
+  /*   14: */ 0x00000013,                         /* nop */ \
+  /* 0000000000000018 <hook_caller_addr>: */ \
+  /*   18: */ 0x0001,                             /* nop */ \
+  /*   1a: */ 0x0001,                             /* nop */ \
+  /*   1c: */ 0x0000,                             /* unimp */ \
+  }
+#define TRANSIT_HOOK_CALLER_ADDR 0x7
+#define TRANSIT_CODE_SIZE 0xa
+
 #endif

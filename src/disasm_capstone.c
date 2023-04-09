@@ -40,6 +40,11 @@
 #define CS_MODE CS_MODE_LITTLE_ENDIAN
 #endif
 
+#ifdef CPU_RISCV
+#define CS_ARCH CS_ARCH_RISCV
+#define CS_MODE (CS_MODE_RISCV64 | CS_MODE_RISCVC)
+#endif
+
 #ifdef CPU_X86_64
 #define CS_ARCH CS_ARCH_X86
 #define CS_MODE CS_MODE_64
@@ -69,6 +74,7 @@ int funchook_disasm_init(funchook_disasm_t *disasm, funchook_t *funchook, const 
         cs_close(&disasm->handle);
         return FUNCHOOK_ERROR_INTERNAL_ERROR;
     }
+
     if ((disasm->count = cs_disasm(disasm->handle, (const uint8_t*)code, code_size * sizeof(insn_t), address, 0, &disasm->insns)) == 0) {
         err = cs_errno(disasm->handle);
         funchook_set_error_message(funchook, "disassemble error: %s", cs_strerror(err));
@@ -314,6 +320,81 @@ funchook_insn_info_t funchook_disasm_arm64_insn_info(funchook_disasm_t *disasm, 
     return info;
 }
 #endif /* defined(CPU_ARM64) */
+
+#if defined(CPU_RISCV)
+// Check only registers in FUNCHOOK_ARM64_CORRUPTIBLE_REGS
+static uint32_t cs2funchook_reg(uint16_t reg)
+{
+    switch (reg) {
+    case RISCV_REG_X9:
+        return FUNCHOOK_RISCV_REG_S0;
+    case RISCV_REG_X10:
+        return FUNCHOOK_RISCV_REG_S1;
+    case RISCV_REG_X11:
+        return FUNCHOOK_RISCV_REG_S2;
+    case RISCV_REG_X12:
+        return FUNCHOOK_RISCV_REG_S3;
+    case RISCV_REG_X13:
+        return FUNCHOOK_RISCV_REG_S4;
+    case RISCV_REG_X14:
+        return FUNCHOOK_RISCV_REG_S5;
+    case RISCV_REG_X15:
+        return FUNCHOOK_RISCV_REG_S6;
+    case RISCV_REG_X16:
+        return FUNCHOOK_RISCV_REG_S7;
+    case RISCV_REG_X17:
+        return FUNCHOOK_RISCV_REG_S8;
+    case RISCV_REG_X18:
+        return FUNCHOOK_RISCV_REG_S9;
+    case RISCV_REG_X19:
+        return FUNCHOOK_RISCV_REG_S10;
+    case RISCV_REG_X20:
+        return FUNCHOOK_RISCV_REG_S11;
+    default:
+        return 0;
+    }
+}
+
+funchook_insn_info_t funchook_disasm_riscv_insn_info(funchook_disasm_t *disasm, const funchook_insn_t *insn)
+{
+    funchook_insn_info_t info = {0,};
+    cs_regs rregs, wregs;
+    uint8_t rregs_cnt, wregs_cnt, i;
+
+    switch (insn->id) {
+    case RISCV_INS_JAL:
+        info.insn_id = FUNCHOOK_RISCV_INSN_JAL;
+        break;
+    case RISCV_INS_BEQ:
+        info.insn_id = FUNCHOOK_RISCV_INSN_BEQ;
+        break;
+    case RISCV_INS_BLT:
+        info.insn_id = FUNCHOOK_RISCV_INSN_BLT;
+        break;
+    case RISCV_INS_BGE:
+        info.insn_id = FUNCHOOK_RISCV_INSN_BGE;
+        break;
+    case RISCV_INS_LW:
+        info.insn_id = FUNCHOOK_RISCV_INSN_LW;
+        break;
+    case RISCV_INS_LD:
+        info.insn_id = FUNCHOOK_RISCV_INSN_LD;
+        break;
+    }
+
+    if (!cs_regs_access(disasm->handle, insn, rregs, &rregs_cnt, wregs, &wregs_cnt)) {
+        for (i = 0; i < rregs_cnt; i++) {
+            info.regs |= cs2funchook_reg(rregs[i]);
+        }
+        for (i = 0; i < wregs_cnt; i++) {
+            info.regs |= cs2funchook_reg(wregs[i]);
+        }
+    }
+    return info;
+}
+
+#endif /* defined(CPU_RISCV) */
+
 
 #if defined(CPU_X86) || defined(CPU_X86_64)
 void funchook_disasm_x86_rip_relative(funchook_disasm_t *disasm, const funchook_insn_t *insn, rip_relative_t *rel_disp, rip_relative_t *rel_imm)

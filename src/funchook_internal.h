@@ -81,6 +81,11 @@
 #define CPU_64BIT
 #endif
 
+#if defined __riscv
+#define CPU_RISCV
+#define CPU_64BIT
+#endif
+
 #if defined _M_AMD64 || defined __x86_64__
 #define CPU_X86_64
 #define CPU_64BIT
@@ -94,6 +99,9 @@
 
 #if defined(CPU_ARM64)
 #include "arch_arm64.h"
+#endif
+#if defined(CPU_RISCV)
+#include "arch_riscv.h"
 #endif
 #if defined(CPU_X86) || defined(CPU_X86_64)
 #include "arch_x86.h"

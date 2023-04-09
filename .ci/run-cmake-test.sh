@@ -15,6 +15,8 @@ fi
 
 if test "`uname -m`" = aarch64; then
   DISASM_BACKENDS="capstone"
+elif test "`uname -m`" = riscv64; then
+  DISASM_BACKENDS="capstone"
 else
   DISASM_BACKENDS="distorm zydis capstone"
 fi
