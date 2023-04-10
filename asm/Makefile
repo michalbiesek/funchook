@@ -3,6 +3,7 @@ TEMPLATE_DISASMS = \
   transit-x86_64.disasm \
   transit-i686.disasm \
   transit-aarch64.disasm \
+  transit-riscv64.disasm \
 
 all: ../src/template.inc
 
@@ -20,6 +21,10 @@ transit-i686.disasm: transit-i686.s
 transit-aarch64.disasm: transit-aarch64.s
 	aarch64-linux-gnu-gcc -c $<
 	aarch64-linux-gnu-objdump -d $(<:.s=.o) >$@
+
+transit-riscv64.disasm: transit-riscv64.s
+	riscv64-linux-gnu-gcc -c $<
+	riscv64-linux-gnu-objdump -d $(<:.s=.o) >$@
 
 clean:
 	$(RM) *.o *.disasm
