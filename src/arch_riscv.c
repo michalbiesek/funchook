@@ -94,7 +94,7 @@ int funchook_make_trampoline(funchook_t *funchook, ip_displacement_t *disp, cons
 cleanup:
     funchook_disasm_cleanup(&disasm);
 
-    return -1;
+    return rv;
 }
 
 int funchook_fix_code(funchook_t *funchook, funchook_entry_t *entry, const ip_displacement_t *disp)
