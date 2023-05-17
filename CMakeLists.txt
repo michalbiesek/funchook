@@ -102,7 +102,7 @@ if (DISASM_CAPSTONE)
                       -DCMAKE_POSITION_INDEPENDENT_CODE=ON
                       -DCAPSTONE_BUILD_STATIC_RUNTIME=OFF
                       -DCAPSTONE_BUILD_TESTS=ON
-                      -DCAPSTONE_BUILD_CSTOOL=OFF
+                      -DCAPSTONE_BUILD_CSTOOL=ON
                       -DCAPSTONE_ARCHITECTURE_DEFAULT=OFF
                       -DCAPSTONE_${FUNCHOOK_CPU_UPPER}_SUPPORT=ON
     INSTALL_COMMAND   ${CMAKE_COMMAND} --build . --target install
