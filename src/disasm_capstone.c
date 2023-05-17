@@ -42,7 +42,7 @@
 
 #ifdef CPU_RISCV
 #define CS_ARCH CS_ARCH_RISCV
-#define CS_MODE CS_MODE_RISCV64
+#define CS_MODE (CS_MODE_RISCV64 | CS_MODE_RISCVC)
 #endif
 
 #ifdef CPU_X86_64
@@ -74,12 +74,6 @@ int funchook_disasm_init(funchook_disasm_t *disasm, funchook_t *funchook, const 
         cs_close(&disasm->handle);
         return FUNCHOOK_ERROR_INTERNAL_ERROR;
     }
-
-    // code nazwa funkcji
-    // code_size * sizeof(ints_t)  sizeof-1
-    // code unsigner char
-	// uint64_t address = 0x1000;
-    // count = cs_disasm(handle, platforms[i].code, platforms[i].size, address, 0, &insn);
 
     if ((disasm->count = cs_disasm(disasm->handle, (const uint8_t*)code, code_size * sizeof(insn_t), address, 0, &disasm->insns)) == 0) {
         err = cs_errno(disasm->handle);

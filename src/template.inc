@@ -116,36 +116,32 @@
   /*   1a: */ 0xf0ce,                             /* sd s3,96(sp) */ \
   /*   1c: */ 0x00000517,                         /* auipc a0,0x0 */ \
   /*   20: */ 0x00053503,                         /* ld a0,0(a0) # 1c <transit+0x1c> */ \
-  /*   24: */ 0x010c,                             /* addi a1,sp,128 */ \
-  /*   26: */ 0x00000317,                         /* auipc t1,0x0 */ \
-  /*   2a: */ 0x00033303,                         /* ld t1,0(t1) # 26 <transit+0x26> */ \
-  /*   2e: */ 0x000300e7,                         /* jalr t1 */ \
-  /*   32: */ 0x6082,                             /* ld ra,0(sp) */ \
-  /*   34: */ 0x6422,                             /* ld s0,8(sp) */ \
-  /*   36: */ 0x64c2,                             /* ld s1,16(sp) */ \
-  /*   38: */ 0x6562,                             /* ld a0,24(sp) */ \
+  /*   24: */ 0x6582,                             /* ld a1,0(sp) */ \
+  /*   26: */ 0x024000ef,                         /* jal ra,4a <hook_caller_addr> */ \
+  /*   2a: */ 0x7986,                             /* ld s3,96(sp) */ \
+  /*   2c: */ 0x6966,                             /* ld s2,88(sp) */ \
+  /*   2e: */ 0x68c6,                             /* ld a7,80(sp) */ \
+  /*   30: */ 0x6826,                             /* ld a6,72(sp) */ \
+  /*   32: */ 0x6786,                             /* ld a5,64(sp) */ \
+  /*   34: */ 0x7762,                             /* ld a4,56(sp) */ \
+  /*   36: */ 0x76c2,                             /* ld a3,48(sp) */ \
+  /*   38: */ 0x7622,                             /* ld a2,40(sp) */ \
   /*   3a: */ 0x7582,                             /* ld a1,32(sp) */ \
-  /*   3c: */ 0x7622,                             /* ld a2,40(sp) */ \
-  /*   3e: */ 0x76c2,                             /* ld a3,48(sp) */ \
-  /*   40: */ 0x7762,                             /* ld a4,56(sp) */ \
-  /*   42: */ 0x6786,                             /* ld a5,64(sp) */ \
-  /*   44: */ 0x6826,                             /* ld a6,72(sp) */ \
-  /*   46: */ 0x68c6,                             /* ld a7,80(sp) */ \
-  /*   48: */ 0x6966,                             /* ld s2,88(sp) */ \
-  /*   4a: */ 0x7986,                             /* ld s3,96(sp) */ \
-  /*   4c: */ 0x6109,                             /* addi sp,sp,128 */ \
-  /*   4e: */ 0x00000317,                         /* auipc t1,0x0 */ \
-  /*   52: */ 0x00033303,                         /* ld t1,0(t1) # 4e <transit+0x4e> */ \
-  /*   56: */ 0x8302,                             /* jr t1 */ \
-  /* 0000000000000058 <hook_caller_addr>: */ \
-  /*   58: */ 0x0001,                             /* nop */ \
-  /*   5a: */ 0x0001,                             /* nop */ \
-  /* 000000000000005c <hook_func_addr>: */ \
-  /*   5c: */ 0x0001,                             /* nop */ \
-  /*   5e: */ 0x0001,                             /* nop */ \
+  /*   3c: */ 0x6562,                             /* ld a0,24(sp) */ \
+  /*   3e: */ 0x64c2,                             /* ld s1,16(sp) */ \
+  /*   40: */ 0x6422,                             /* ld s0,8(sp) */ \
+  /*   42: */ 0x6082,                             /* ld ra,0(sp) */ \
+  /*   44: */ 0x6109,                             /* addi sp,sp,128 */ \
+  /*   46: */ 0x008000ef,                         /* jal ra,4e <hook_func_addr> */ \
+  /* 000000000000004a <hook_caller_addr>: */ \
+  /*   4a: */ 0x0001,                             /* nop */ \
+  /*   4c: */ 0x0001,                             /* nop */ \
+  /* 000000000000004e <hook_func_addr>: */ \
+  /*   4e: */ 0x0001,                             /* nop */ \
+  /*   50: */ 0x0001,                             /* nop */ \
   }
-#define TRANSIT_HOOK_CALLER_ADDR 0x25
-#define TRANSIT_HOOK_FUNC_ADDR 0x27
-#define TRANSIT_CODE_SIZE 0x29
+#define TRANSIT_HOOK_CALLER_ADDR 0x21
+#define TRANSIT_HOOK_FUNC_ADDR 0x23
+#define TRANSIT_CODE_SIZE 0x25
 
 #endif
